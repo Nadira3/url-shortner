@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>About Shortner-Pro | Simple URL Shortening</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+            :root {
+                --primary-color: #3498db;
+                --secondary-color: #3498db; /* Changed to match primary-color */
+                --background-color: #f9f9f9;
+                --text-color: #333;
+                --transition-speed: 0.3s;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Poppins", sans-serif;
+                background-color: var(--background-color);
+                color: var(--text-color);
+                line-height: 1.6;
+                overflow-x: hidden;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 2rem;
+            }
+
+            header {
+                background-color: var(--primary-color);
+                color: white;
+                padding: 2rem 0;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                animation: fadeInDown 1s ease-out;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+                opacity: 0;
+                animation: fadeInUp 1s ease-out 0.5s forwards;
+            }
+
+            main {
+                padding: 4rem 0;
+            }
+
+            .feature {
+                display: flex;
+                align-items: center;
+                margin-bottom: 4rem;
+                opacity: 0;
+                transform: translateY(20px);
+                transition:
+                    opacity var(--transition-speed),
+                    transform var(--transition-speed);
+            }
+
+            .feature.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .feature-icon {
+                font-size: 3rem;
+                margin-right: 2rem;
+                color: var(--primary-color); /* Changed to primary-color */
+            }
+
+            .feature-content h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+                color: var(--primary-color);
+            }
+
+            .cta {
+                text-align: center;
+                margin-top: 4rem;
+            }
+
+            .cta-button {
+                display: inline-block;
+                background-color: var(
+                    --primary-color
+                ); /* Changed to primary-color */
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 50px;
+                text-decoration: none;
+                font-size: 1.2rem;
+                transition:
+                    transform var(--transition-speed),
+                    box-shadow var(--transition-speed);
+            }
+
+            .cta-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); /* Updated shadow color */
+            }
+
+            footer {
+                background-color: var(--primary-color);
+                color: white;
+                text-align: center;
+                padding: 2rem 0;
+                margin-top: 4rem;
+            }
+
+            @keyframes fadeInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <h1>Shortner-Pro</h1>
+                <p class="tagline">Simplifying links, amplifying reach.</p>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="feature">
+                <div class="feature-icon">🚀</div>
+                <div class="feature-content">
+                    <h2>Lightning Fast</h2>
+                    <p>
+                        Shorten your URLs in seconds. No registration, no
+                        hassle. Just paste and go!
+                    </p>
+                </div>
+            </section>
+
+            <section class="feature">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-content">
+                    <h2>Privacy First</h2>
+                    <p>
+                        We don't track your data or require any personal
+                        information. Your links, your business.
+                    </p>
+                </div>
+            </section>
+
+            <section class="feature">
+                <div class="feature-icon">🌐</div>
+                <div class="feature-content">
+                    <h2>Universal Access</h2>
+                    <p>
+                        Use Shortner-Pro from anywhere, on any device. Our
+                        responsive design ensures a seamless experience.
+                    </p>
+                </div>
+            </section>
+
+            <div class="cta">
+                <a href="{% url 'short_url' %}" class="cta-button"
+                    >Start Shortening Now</a
+                >
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p>&copy; 2024 Shortner-Pro. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const features = document.querySelectorAll(".feature");
+
+                const observerOptions = {
+                    root: null,
+                    rootMargin: "0px",
+                    threshold: 0.1,
+                };
+
+                const observer = new IntersectionObserver(
+                    (entries, observer) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add("visible");
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    },
+                    observerOptions,
+                );
+
+                features.forEach((feature) => {
+                    observer.observe(feature);
+                });
+            });
+        </script>
+    </body>
+</html>
