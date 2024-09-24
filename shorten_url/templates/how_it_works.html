@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>URL Shortener - How It Works</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f4f4f4;
+            }
+            h1 {
+                text-align: center;
+                color: #2c3e50;
+            }
+            .step {
+                background-color: #fff;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                transform: translateY(20px);
+                transition:
+                    opacity 0.5s,
+                    transform 0.5s;
+            }
+            .step.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .step h2 {
+                color: #3498db;
+                margin-top: 0;
+            }
+            .animation-container {
+                background-color: #ecf0f1;
+                border-radius: 8px;
+                padding: 20px;
+                margin-top: 20px;
+                text-align: center;
+                overflow: hidden;
+            }
+            #animatedUrl {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            #shortenedUrl {
+                font-weight: bold;
+                color: #27ae60;
+            }
+            .button {
+                display: inline-block;
+                background-color: #3498db;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                transition: background-color 0.3s;
+            }
+            .button:hover {
+                background-color: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>How Our URL Shortener Works</h1>
+
+        <div class="step">
+            <h2>Step 1: Enter Your Long URL</h2>
+            <p>
+                Start by pasting your long URL into our shortener form. This can
+                be any valid web address you want to make shorter and easier to
+                share.
+            </p>
+        </div>
+
+        <div class="step">
+            <h2>Step 2: Click "Shorten"</h2>
+            <p>
+                Once you've entered your URL, simply click the "Shorten" button.
+                Our system will then process your request.
+            </p>
+        </div>
+
+        <div class="step">
+            <h2>Step 3: Get Your Shortened URL</h2>
+            <p>
+                In just a moment, we'll generate a unique, shortened URL for
+                you. This new URL will redirect to your original long URL when
+                accessed.
+            </p>
+        </div>
+
+        <div class="step">
+            <h2>Step 4: Share and Use</h2>
+            <p>
+                Copy your new shortened URL and use it wherever you like! It's
+                perfect for social media, emails, or any place where a shorter
+                link is more convenient.
+            </p>
+        </div>
+
+        <div class="animation-container">
+            <div id="animatedUrl">
+                https://www.example.com/very/long/url/that/needs/shortening
+            </div>
+            <div id="shortenedUrl"></div>
+            <a href="#" class="button" id="shortenButton">Shorten URL</a>
+        </div>
+
+        <script>
+            function generateShortCode() {
+                const characters =
+                    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                let result = "";
+                for (let i = 0; i < 8; i++) {
+                    result += characters.charAt(
+                        Math.floor(Math.random() * characters.length),
+                    );
+                }
+                return result;
+            }
+            function animateShortening() {
+                const longUrl = document.getElementById("animatedUrl");
+                const shortUrl = document.getElementById("shortenedUrl");
+                const button = document.getElementById("shortenButton");
+
+                button.style.display = "none";
+                longUrl.style.transition = "all 1s";
+                longUrl.style.transform = "scale(0.8)";
+                longUrl.style.opacity = "0.5";
+
+                setTimeout(() => {
+                    const shortCode = generateShortCode();
+                    shortUrl.textContent = `https://short.url/${shortCode}`;
+                    shortUrl.style.transition = "all 0.5s";
+                    shortUrl.style.transform = "scale(1.2)";
+                    shortUrl.style.opacity = "1";
+
+                    setTimeout(() => {
+                        shortUrl.style.transform = "scale(1)";
+                    }, 500);
+                }, 1000);
+
+                setTimeout(() => {
+                    button.style.display = "inline-block";
+                    button.textContent = "Shorten Another URL";
+                    longUrl.style.transform = "scale(1)";
+                    longUrl.style.opacity = "1";
+                    shortUrl.textContent = "";
+                }, 5000);
+            }
+
+            document
+                .getElementById("shortenButton")
+                .addEventListener("click", function (e) {
+                    e.preventDefault();
+                    animateShortening();
+                });
+
+            // Animate steps on scroll
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <=
+                        (window.innerHeight ||
+                            document.documentElement.clientHeight) &&
+                    rect.right <=
+                        (window.innerWidth ||
+                            document.documentElement.clientWidth)
+                );
+            }
+
+            function animateStepsOnScroll() {
+                const steps = document.querySelectorAll(".step");
+                steps.forEach((step) => {
+                    if (isElementInViewport(step)) {
+                        step.classList.add("visible");
+                    }
+                });
+            }
+
+            window.addEventListener("scroll", animateStepsOnScroll);
+            window.addEventListener("load", animateStepsOnScroll);
+        </script>
+    </body>
+</html>
